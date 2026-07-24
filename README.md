@@ -1,4 +1,4 @@
-# MVVM MessageBox Service for WPF (using Dependency Injection)
+# MVVM MessageBox Service for WPF and  .net  MAUI(using Dependency Injection)
 A C# MVVM Service for displaying simple MessageBox messages with custom styles included - 
 Uses MVVM Toolkit with Microsoft.Extensions.DependencyInjection but can be adapted to any MVVM / DI Library.
 This service illustrate how you can have a view model that displays dialog boxes but still can be easily unit tested.
