@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MessageBox.Maui.Sample.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Dialog Lab"
+    BackgroundColor="{AppThemeBinding Light=#F5F7FB, Dark=#101319}">
+
+    <ContentPage.Resources>
+        <Style x:Key="ScenarioButton" TargetType="Button">
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="HeightRequest" Value="52" />
+            <Setter Property="HorizontalOptions" Value="Fill" />
+        </Style>
+        <Style x:Key="SectionTitle" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=#172033, Dark=#F3F5FA}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout
+            MaximumWidthRequest="760"
+            Padding="24,28,24,40"
+            Spacing="18">
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="32"
+                SemanticProperties.HeadingLevel="Level1"
+                Text="MessageBox Dialog Lab"
+                TextColor="{AppThemeBinding Light=#172033, Dark=#F3F5FA}" />
+
+            <Label
+                FontSize="16"
+                Text="Interactively exercise the shared dialog contract using native MAUI alerts."
+                TextColor="{AppThemeBinding Light=#566079, Dark=#B7BFCE}" />
+
+            <Border
+                Padding="18"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#1A202A}"
+                Stroke="{AppThemeBinding Light=#DDE2EC, Dark=#303846}"
+                StrokeShape="RoundRectangle 16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Style="{StaticResource SectionTitle}" Text="Button combinations" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Command="{Binding ErrorCommand}"
+                            Style="{StaticResource ScenarioButton}"
+                            Text="Yes / No / Cancel" />
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Command="{Binding WarningCommand}"
+                            Style="{StaticResource ScenarioButton}"
+                            Text="OK / Cancel" />
+                        <Button
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Command="{Binding QuestionCommand}"
+                            Style="{StaticResource ScenarioButton}"
+                            Text="Yes / No" />
+                        <Button
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Command="{Binding InformationCommand}"
+                            Style="{StaticResource ScenarioButton}"
+                            Text="Information" />
+                        <Button
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Command="{Binding SimpleCommand}"
+                            Style="{StaticResource ScenarioButton}"
+                            Text="Simple OK" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border
+                Padding="18"
+                BackgroundColor="{AppThemeBinding Light=#EAF1FF, Dark=#18243A}"
+                Stroke="{AppThemeBinding Light=#AFC7F5, Dark=#31558D}"
+                StrokeShape="RoundRectangle 16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Style="{StaticResource SectionTitle}" Text="Complex workflow" />
+                    <Label
+                        Text="Walk through the same branching nine-path scenario used by the WPF sample and unit tests."
+                        TextColor="{AppThemeBinding Light=#44506A, Dark=#C2CAD8}" />
+                    <Button
+                        BackgroundColor="#315FCE"
+                        Command="{Binding ComplexPathCommand}"
+                        CornerRadius="12"
+                        FontAttributes="Bold"
+                        HeightRequest="54"
+                        Text="Start interactive path"
+                        TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border
+                Padding="18"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#1A202A}"
+                Stroke="{AppThemeBinding Light=#DDE2EC, Dark=#303846}"
+                StrokeShape="RoundRectangle 16">
+                <VerticalStackLayout Spacing="8">
+                    <Label Style="{StaticResource SectionTitle}" Text="Last result" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        Text="{Binding DialogResult}"
+                        TextColor="#315FCE" />
+                    <Label
+                        FontSize="13"
+                        LineBreakMode="WordWrap"
+                        Text="{Binding LastScenario}"
+                        TextColor="{AppThemeBinding Light=#566079, Dark=#B7BFCE}" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

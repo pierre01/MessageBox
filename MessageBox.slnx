@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="MessageBox.Core/MessageBox.Core.csproj" />
+  <Project Path="MessageBox.Wpf.Sample/MessageBox.Wpf.Sample.csproj">
+    <BuildDependency Project="MessageBoxUtilities/MessageBoxUtilities.csproj" />
+  </Project>
+  <Project Path="MessageBox.Maui/MessageBox.Maui.csproj" />
+  <Project Path="MessageBox.Maui.Sample/MessageBox.Maui.Sample.csproj" />
+  <Project Path="MessageBox.Maui.Tests/MessageBox.Maui.Tests.csproj" />
+  <Project Path="MessageBoxUnitTests/MessageBoxUnitTests.csproj" />
+  <Project Path="MessageBoxUtilities/MessageBoxUtilities.csproj" />
+</Solution>

@@ -19,3 +19,73 @@ This shows a function including multiple  decisions triggered by user input.
 The Unit test module shows how to unit test the function for full code coverage.
 
 ![Complex Path](https://github.com/pierre01/MessageBox/blob/development/MessageBoxPathToTest.jpg)
+
+## Shared API
+
+WPF and .NET MAUI use the same platform-neutral contract from
+`Delange.MessageBox.Core`:
+
+- `IMessageDialogService`
+- `MessageDialogRequest`
+- `MessageDialogResult`
+- `MessageDialogButtons`
+- `MessageDialogIcon`
+
+Both implementations expose `ShowAsync`, so view models and their unit tests can
+be shared without referencing WPF or MAUI:
+
+```csharp
+MessageDialogResult result = await dialogs.ShowAsync(
+    new MessageDialogRequest("Discard your changes?")
+    {
+        Title = "Confirm",
+        Buttons = MessageDialogButtons.YesNo,
+        Icon = MessageDialogIcon.Warning
+    });
+```
+
+The platform implementations are named consistently:
+
+- `Delange.MessageBox.Wpf.WpfMessageDialogService`
+- `Delange.MessageBox.Maui.MauiMessageDialogService`
+
+## .NET MAUI
+
+`MessageBox.Maui` provides an asynchronous, MVVM-friendly abstraction over the
+native .NET MAUI alert APIs for Android, iOS, Mac Catalyst, and Windows. It
+supports OK, OK/Cancel, Yes/No, and Yes/No/Cancel dialogs, custom button labels,
+cancellation while waiting, and serialized presentation.
+
+Register the service in `MauiProgram.CreateMauiApp`:
+
+```csharp
+builder.Services.AddMauiMessageDialogs();
+```
+
+Inject and use it from a view model:
+
+```csharp
+public sealed class EditorViewModel(IMessageDialogService dialogs)
+{
+    public async Task<bool> ConfirmDiscardAsync(CancellationToken cancellationToken)
+    {
+        MessageDialogResult result = await dialogs.ShowAsync(
+            new MessageDialogRequest("Discard your unsaved changes?")
+            {
+                Title = "Confirm",
+                Buttons = MessageDialogButtons.YesNo,
+                Icon = MessageDialogIcon.Warning
+            },
+            cancellationToken);
+
+        return result == MessageDialogResult.Yes;
+    }
+}
+```
+
+The built-in implementation uses platform-native dialogs, so appearance follows
+each operating system. `MessageDialogIcon` records intent for alternative/custom
+presenters; native MAUI alerts do not guarantee a corresponding icon.
+
+Run `MessageBox.Maui.Sample` to interactively test all button combinations and
+walk through the same nine-path workflow demonstrated by the WPF sample.

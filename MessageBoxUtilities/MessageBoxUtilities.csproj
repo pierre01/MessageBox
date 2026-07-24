@@ -6,6 +6,10 @@
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Delange.MessageBox</RootNamespace>
+    <AssemblyName>Delange.MessageBox.Wpf</AssemblyName>
+    <PackageId>Delange.MessageBox.Wpf</PackageId>
+    <Description>WPF implementation of the shared Delange message dialog contract.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +20,11 @@
     <Content Include="Icon1.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MessageBox.Core\MessageBox.Core.csproj" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" Link="README.md" />
   </ItemGroup>
 
 </Project>

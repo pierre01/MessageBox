@@ -1,145 +1,113 @@
-﻿using System.Windows;
+using System.Windows;
 
-namespace Delange.MessageBox;
+namespace Delange.MessageBox.Wpf;
 
 /// <summary>
-/// Interaction logic for MessageBoxDialog.xaml
+/// Interaction logic for MessageBoxDialog.xaml.
 /// </summary>
 public partial class MessageBoxDialog : Window
 {
+    public MessageDialogResult Result { get; private set; } = MessageDialogResult.None;
 
-    private MessageBoxServiceResult _result = MessageBoxServiceResult.None;
-    public MessageBoxServiceResult Result { get => _result; }
-
-    public MessageBoxDialog(string message, string header = "", MessageBoxServiceButton buttons = MessageBoxServiceButton.Ok, MessageBoxServiceIcon icon = MessageBoxServiceIcon.None, MessageBoxServiceResult defaultButton = MessageBoxServiceResult.OK)
+    public MessageBoxDialog(MessageDialogRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         InitializeComponent();
-        MessageText.Text = message;
-        Title = header;
-        _result = MessageBoxServiceResult.None;
+
+        MessageText.Text = request.Message;
+        Title = request.Title;
+        ConfigureIcon(request.Icon);
+        ConfigureButtons(request);
+        ConfigureDefaultButton(request.DefaultResult);
+    }
+
+    private void ConfigureIcon(MessageDialogIcon icon)
+    {
         switch (icon)
         {
-            case MessageBoxServiceIcon.Information:
+            case MessageDialogIcon.Information:
                 InformationIcon.Visibility = Visibility.Visible;
                 break;
-            case MessageBoxServiceIcon.Warning:
+            case MessageDialogIcon.Warning:
                 WarningIcon.Visibility = Visibility.Visible;
                 break;
-            case MessageBoxServiceIcon.Error:
+            case MessageDialogIcon.Error:
                 CriticalIcon.Visibility = Visibility.Visible;
                 break;
-            case MessageBoxServiceIcon.Question:
+            case MessageDialogIcon.Question:
                 QuestionIcon.Visibility = Visibility.Visible;
                 break;
-            case MessageBoxServiceIcon.None:
-            default:
-                break;
         }
-        switch (buttons)
+    }
+
+    private void ConfigureButtons(MessageDialogRequest request)
+    {
+        OkButton.Content = request.OkText;
+        CancelButton.Content = request.CancelText;
+        YesButton.Content = request.YesText;
+        NoButton.Content = request.NoText;
+
+        switch (request.Buttons)
         {
-            case MessageBoxServiceButton.OkCancel:
+            case MessageDialogButtons.OkCancel:
                 OkButton.Visibility = Visibility.Visible;
                 CancelButton.Visibility = Visibility.Visible;
                 CancelButton.IsCancel = true;
                 break;
-            case MessageBoxServiceButton.YesNo:
+            case MessageDialogButtons.YesNo:
                 YesButton.Visibility = Visibility.Visible;
-                YesButton.IsDefault = true;
-                OkButton.IsDefault = false;
                 NoButton.Visibility = Visibility.Visible;
                 NoButton.IsCancel = true;
                 break;
-            case MessageBoxServiceButton.YesNoCancel:
+            case MessageDialogButtons.YesNoCancel:
                 YesButton.Visibility = Visibility.Visible;
-                YesButton.IsDefault = true;
-                OkButton.IsDefault = false;
                 NoButton.Visibility = Visibility.Visible;
                 CancelButton.Visibility = Visibility.Visible;
                 CancelButton.IsCancel = true;
                 break;
-            case MessageBoxServiceButton.Ok:
-            default:
+            case MessageDialogButtons.Ok:
                 OkButton.Visibility = Visibility.Visible;
                 break;
-        }
-        switch (defaultButton)
-        {
-            case MessageBoxServiceResult.Cancel:
-                CancelButton.IsDefault = true;
-                break;
-            case MessageBoxServiceResult.Yes:
-                YesButton.IsDefault = true;
-                break;
-            case MessageBoxServiceResult.No:
-                NoButton.IsDefault = true;
-                break;
-            case MessageBoxServiceResult.OK:
-                OkButton.IsDefault = true;
-                break;
-        }
-        if (Application.Current.MainWindow != null)
-        {
-            Owner = Application.Current.MainWindow;
-            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            default:
+                throw new ArgumentOutOfRangeException(
+                    nameof(request),
+                    request.Buttons,
+                    "Unsupported button combination.");
         }
     }
 
-    private void OKClicked(object sender, RoutedEventArgs e)
+    private void ConfigureDefaultButton(MessageDialogResult defaultResult)
     {
-        _result = MessageBoxServiceResult.OK;
+        OkButton.IsDefault = defaultResult == MessageDialogResult.Ok;
+        CancelButton.IsDefault = defaultResult == MessageDialogResult.Cancel;
+        YesButton.IsDefault = defaultResult == MessageDialogResult.Yes;
+        NoButton.IsDefault = defaultResult == MessageDialogResult.No;
+    }
+
+    private void OKClicked(object sender, RoutedEventArgs e) => CloseWith(MessageDialogResult.Ok);
+
+    private void CancelClicked(object sender, RoutedEventArgs e) =>
+        CloseWith(MessageDialogResult.Cancel);
+
+    private void YesClicked(object sender, RoutedEventArgs e) => CloseWith(MessageDialogResult.Yes);
+
+    private void NoClicked(object sender, RoutedEventArgs e) => CloseWith(MessageDialogResult.No);
+
+    private void CloseWith(MessageDialogResult result)
+    {
+        Result = result;
         DialogResult = true;
     }
 
-    private void CancelClicked(object sender, RoutedEventArgs e)
-    {
-        _result = MessageBoxServiceResult.Cancel;
-        DialogResult = true;
-    }
-
-    private void YesClicked(object sender, RoutedEventArgs e)
-    {
-        _result = MessageBoxServiceResult.Yes;
-        DialogResult = true;
-    }
-
-    private void NoClicked(object sender, RoutedEventArgs e)
-    {
-        _result = MessageBoxServiceResult.No;
-        DialogResult = true;
-    }
-
-    /// <summary>
-    /// MessageBox is closed - Handle cases when the close button is clicked and doesn't register as cancel
-    /// </summary>
-    /// <param name="e"></param>
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
-        if (DialogResult != true) // No button Registered
-        {
-            // Handles when the user click the close button (right top corner)
 
-            // If the cancel Button is visible on the MessageBox the close button should have the same effect
-            if (_result == MessageBoxServiceResult.None && (CancelButton.Visibility == Visibility.Visible))
-            {
-                _result = MessageBoxServiceResult.Cancel;
-            }
-            else
-            {
-                // If a Button is assigned to canceling the form 
-                // Set the result to that button
-                if (_result == MessageBoxServiceResult.None)
-                {
-                    if (YesButton.IsCancel)
-                    {
-                        _result = MessageBoxServiceResult.Yes;
-                    }
-                    if (NoButton.IsCancel)
-                    {
-                        _result = MessageBoxServiceResult.No;
-                    }
-                }
-            }
+        if (Result == MessageDialogResult.None)
+        {
+            Result = CancelButton.Visibility == Visibility.Visible
+                ? MessageDialogResult.Cancel
+                : MessageDialogResult.Ok;
         }
     }
 }

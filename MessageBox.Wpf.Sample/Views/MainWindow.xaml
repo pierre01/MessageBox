@@ -1,0 +1,59 @@
+<Window
+    x:Class="MessageBox.Wpf.Sample.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="MessageBox WPF Sample"
+    Width="800"
+    Height="450">
+    <Grid>
+        <Button
+            Width="192"
+            Margin="34,68,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Button5Command}"
+            Content="Simple OK message" />
+        <Button
+            Width="192"
+            Margin="34,93,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Button4Command}"
+            Content="Info with OK" />
+        <Button
+            Width="192"
+            Margin="34,118,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Button3Command}"
+            Content="Question with Yes-No" />
+        <Button
+            Width="192"
+            Margin="34,143,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Button2Command}"
+            Content="Warning with OK-Cancel" />
+        <Button
+            Width="192"
+            Margin="34,168,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Button1Command}"
+            Content="Error with Yes-No-Cancel" />
+        <TextBox
+            Width="192"
+            Margin="34,193,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="{Binding DialogResult, Mode=OneWay}"
+            TextWrapping="Wrap" />
+        <Button
+            Width="192"
+            Margin="247,68,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding ComplexPathCommand}"
+            Content="Complex Path" />
+    </Grid>
+</Window>

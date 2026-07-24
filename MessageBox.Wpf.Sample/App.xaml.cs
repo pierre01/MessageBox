@@ -1,12 +1,13 @@
 ﻿using Delange.MessageBox;
-using MessageBoxMVVM.ViewModels;
-using MessageBoxMVVM.Views;
+using Delange.MessageBox.Wpf;
+using MessageBox.Wpf.Sample.ViewModels;
+using MessageBox.Wpf.Sample.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 using System.Data;
 using System.Windows;
 
-namespace MessageBoxMVVM;
+namespace MessageBox.Wpf.Sample;
 
 /// <summary>
 /// Interaction logic for App.xaml
@@ -36,7 +37,7 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        services.AddSingleton<IMessageBoxService, MessageBoxService>();
+        services.AddSingleton<IMessageDialogService, WpfMessageDialogService>();
         services.AddSingleton<MainWindowViewModel>();        
         services.AddSingleton<MainWindow>();        
         

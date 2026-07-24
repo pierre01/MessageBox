@@ -1,9 +1,9 @@
 ﻿<Window
-    x:Class="Delange.MessageBox.MessageBoxDialog"
+    x:Class="Delange.MessageBox.Wpf.MessageBoxDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Delange.MessageBox"
+    xmlns:local="clr-namespace:Delange.MessageBox.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MessageBoxDialog" Width="Auto"
     Height="Auto" MinHeight="200" MaxWidth="460"
